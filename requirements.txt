@@ -1,0 +1,12 @@
+# requirements.txt - Dependencias del Proyecto BD Gabinete de Abogados
+# Instalar con: pip install -r requirements.txt
+
+# Framework Web
+Django==4.2.0
+
+# Driver Oracle
+cx-Oracle==8.3.0
+
+# Utilidades
+sqlparse==0.4.4
+pytz==2024.1

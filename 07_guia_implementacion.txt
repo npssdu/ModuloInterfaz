@@ -1,0 +1,338 @@
+================================================================================
+GUÍA DE IMPLEMENTACIÓN - PROYECTO BD GABINETE DE ABOGADOS
+PERÍODO 2025-3 | Profesor: Sonia Ordoñez Salinas
+================================================================================
+
+📋 TABLA DE CONTENIDOS
+1. Descripción del Proyecto
+2. Requisitos del Sistema
+3. Estructura de Archivos
+4. Instrucciones de Instalación
+5. Ejecución del Proyecto
+6. Descripción de Componentes
+7. Consultas Importantes
+8. Notas Técnicas
+
+================================================================================
+1. DESCRIPCIÓN DEL PROYECTO
+================================================================================
+
+Este proyecto implementa un sistema de gestión para un gabinete de abogados que
+incluye:
+
+✓ Base de datos relacional en Oracle con 17 tablas
+✓ Inserciones de datos de prueba (5 clientes, 5 abogados, casos hipotéticos)
+✓ Interfaz web Django para registro y búsqueda de clientes
+✓ Conexión directa a Oracle (sin ORM - SQL puro)
+✓ Validación de datos y manejo de errores
+
+================================================================================
+2. REQUISITOS DEL SISTEMA
+================================================================================
+
+Software necesario:
+- Oracle Database 11g o superior
+- Python 3.8+
+- Django 3.2 o 4.0+
+- cx_Oracle (driver de Oracle para Python)
+- Power Designer (para diseño de BD)
+
+Instalación de dependencias Python:
+$ pip install django==4.2
+$ pip install cx-Oracle==8.3.0
+
+================================================================================
+3. ESTRUCTURA DE ARCHIVOS
+================================================================================
+
+ProyectoGabinete/
+├── 01_crear_tablas.sql          # Script de creación de tablas
+├── 02_inserciones_datos.sql     # Script de inserciones de datos
+├── 03_django_settings.py        # Configuración de Django
+├── 04_django_views.py           # Lógica de vistas y conexión BD
+├── 05_django_urls.py            # Rutas de la aplicación
+├── 06_html_template.html        # Interfaz web de registro
+├── requirements.txt             # Dependencias del proyecto
+└── manage.py                    # Script de administración de Django
+
+Estructura en la BD Oracle:
+CREATE TABLE statements en: 01_crear_tablas.sql
+INSERT statements en: 02_inserciones_datos.sql
+
+================================================================================
+4. INSTRUCCIONES DE INSTALACIÓN
+================================================================================
+
+PASO 1: Crear Base de Datos en Oracle
+--------------------------------------
+Conectarse a Oracle SQL*Plus o SQL Developer:
+
+$ sqlplus USUARIO/CONTRASEÑA@BASEDATOS
+
+Ejecutar script de creación:
+SQL> @01_crear_tablas.sql;
+SQL> COMMIT;
+
+Verificar tablas creadas:
+SQL> SELECT table_name FROM user_tables 
+     WHERE table_name IN ('CLIENTE', 'ABOGADO', 'CASO');
+
+PASO 2: Insertar Datos de Prueba
+---------------------------------
+En SQL*Plus:
+SQL> @02_inserciones_datos.sql;
+SQL> COMMIT;
+
+Verificar inserciones:
+SQL> SELECT COUNT(*) FROM CLIENTE;      -- Debe retornar 5
+SQL> SELECT COUNT(*) FROM ABOGADO;      -- Debe retornar 5
+SQL> SELECT COUNT(*) FROM CASO;         -- Debe retornar 5
+
+PASO 3: Crear Proyecto Django
+------------------------------
+En terminal:
+$ mkdir ProyectoGabinete
+$ cd ProyectoGabinete
+$ python -m venv venv
+$ source venv/bin/activate     # En Windows: venv\Scripts\activate
+$ pip install -r requirements.txt
+
+PASO 4: Crear Estructura Django
+-------------------------------
+$ django-admin startproject proyecto .
+$ python manage.py startapp clientes
+
+Copiar archivos:
+- 03_django_settings.py → proyecto/settings.py
+- 04_django_views.py → clientes/views.py
+- 05_django_urls.py → proyecto/urls.py
+- 06_html_template.html → templates/clientes/registro_cliente.html
+
+PASO 5: Configurar Conexión a Oracle
+------------------------------------
+Editar settings.py - DATABASES:
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'localhost:1521/orcl',     # Cambiar según config
+        'USER': 'SU_USUARIO',
+        'PASSWORD': 'SU_CONTRASEÑA',
+    }
+}
+
+PASO 6: Iniciar Aplicación
+--------------------------
+$ python manage.py runserver
+
+Acceder a: http://127.0.0.1:8000/
+
+================================================================================
+5. EJECUCIÓN DEL PROYECTO
+================================================================================
+
+Inicio del servidor Django:
+$ cd ProyectoGabinete
+$ source venv/bin/activate
+$ python manage.py runserver
+
+Salida esperada:
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+Usar la aplicación:
+1. Abrir navegador en http://127.0.0.1:8000/
+2. Para BUSCAR cliente: Ingresar código (ej: C0001) y presionar 🔎
+3. Para GUARDAR cliente: Completar formulario y presionar 💾 Guardar
+4. Todos los datos se guardan en Oracle
+
+================================================================================
+6. DESCRIPCIÓN DE COMPONENTES
+================================================================================
+
+A) BASE DE DATOS (SQL)
+----------------------
+Tablas principales:
+- CLIENTE: Datos de los clientes
+- ABOGADO: Información de abogados y especialización
+- CASO: Casos asignados a clientes y abogados
+- TIPODOCUMENTO: Catálogo de tipos de identificación
+- LUGAR: Juzgados y tribunales
+- ETAPAPROCESAL: Estados del proceso legal
+- ESPECIA_ETAPA: Relación entre especialización y etapas
+
+Relaciones principales:
+CLIENTE (1) ----> (N) CASO
+ABOGADO (1) ----> (N) CASO
+LUGAR (1) ------> (N) CASO
+TIPODOCUMENTO (1) -> (N) CLIENTE
+
+B) PYTHON / DJANGO (Backend)
+-----------------------------
+views.py contiene funciones:
+
+1. conectar_bd()
+   - Establece conexión con Oracle
+   - Retorna conexión activa o None si falla
+
+2. obtener_tipos_documento()
+   - Una SOLA consulta SELECT a TIPODOCUMENTO
+   - Retorna lista de tipos para combo
+
+3. obtener_cliente(cod_cliente)
+   - Una SOLA consulta JOIN para obtener cliente
+   - Retorna diccionario con datos o None
+
+4. buscar_cliente_ajax(request)
+   - Endpoint para búsqueda mediante lupa
+   - Valida código y retorna JSON
+
+5. guardar_cliente(request)
+   - INSERT o UPDATE según exista cliente
+   - Valida todos los campos
+   - Ejecuta transacción con COMMIT/ROLLBACK
+
+C) FRONTEND (HTML/JavaScript)
+-----------------------------
+Características:
+- Interfaz responsive con CSS Grid/Flexbox
+- Validación client-side de campos
+- AJAX para búsqueda sin recargar página
+- Indicadores de carga (spinner)
+- Mensajes de éxito/error en tiempo real
+- Lista desplegable dinámica de tipos de documento
+
+Funciones JavaScript:
+- buscarCliente(): Busca cliente por código
+- guardarCliente(): Guarda/actualiza cliente
+- mostrarMensaje(): Muestra notificaciones
+
+================================================================================
+7. CONSULTAS IMPORTANTES
+================================================================================
+
+Búsqueda de Cliente por Código:
+SELECT c.codCliente, c.nomCliente, c.apellCliente, c.nDocumento, 
+       c.idTipoDoc, t.descTipoDoc
+FROM CLIENTE c
+JOIN TIPODOCUMENTO t ON c.idTipoDoc = t.idTipoDoc
+WHERE c.codCliente = 'C0001';
+
+Obtener Tipos de Documento (Para combo):
+SELECT idTipoDoc, descTipoDoc FROM TIPODOCUMENTO ORDER BY idTipoDoc;
+
+Casos de un Abogado:
+SELECT ca.noCaso, ca.fechaInicio, ca.fechaFin, ca.valor, 
+       cl.nomCliente, ab.nombre
+FROM CASO ca
+JOIN CLIENTE cl ON ca.codCliente = cl.codCliente
+JOIN ABOGADO ab ON ca.cedula = ab.cedula
+WHERE ca.cedula = '1000000001'
+ORDER BY ca.fechaInicio DESC;
+
+Expediente de un Caso:
+SELECT ex.consecExpe, ex.fechaEtapa, ep.nomEtapa, ca.noCaso
+FROM EXPEDIENTE ex
+JOIN ETAPAPROCESAL ep ON ex.codEtapa = ep.codEtapa
+JOIN CASO ca ON ex.noCaso = ca.noCaso
+WHERE ca.noCaso = 10001
+ORDER BY ex.fechaEtapa;
+
+================================================================================
+8. NOTAS TÉCNICAS
+================================================================================
+
+Restricción de No FrameWork ORM:
+✓ Se usa SQL PURO con cx_Oracle
+✓ No se utiliza Django ORM (models.py)
+✓ Las consultas son explícitas y optimizadas
+✓ Mayor control sobre las transacciones
+
+Una Sola Consulta por Operación:
+✓ obtener_tipos_documento() = 1 SELECT
+✓ obtener_cliente() = 1 SELECT con JOIN
+✓ buscar_cliente_ajax() = 1 SELECT
+✓ guardar_cliente() = 1 SELECT + 1 INSERT/UPDATE
+
+Validaciones:
+- Backend: Todas las validaciones se repiten en server
+- Frontend: Validaciones rápidas para mejor UX
+- Base de datos: Constraints NOT NULL y CHECK
+
+Transacciones:
+- AUTOCOMMIT deshabilitado
+- INSERT/UPDATE con rollback en caso de error
+- Confirmación explícita con COMMIT
+
+Seguridad:
+- Parámetros con bind variables (:param)
+- Prevención de SQL Injection
+- CSRF token en formularios Django
+- Validación de entrada
+
+================================================================================
+TABLA DE PRUEBAS
+================================================================================
+
+Cliente de prueba en BD:
+- Código: C0001
+- Nombre: Juan
+- Apellido: Pérez García
+- Documento: 1234567890
+- Tipo: CC (Cédula de Ciudadanía)
+
+Para probar búsqueda: Ingrese "C0001" en el campo de código
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Error: "Oracle Client Library could not be loaded"
+Solución: Instalar Oracle Client (conexión local) o usar cx_Oracle con
+conexión remota configurada correctamente en tnsnames.ora
+
+Error: "ORA-28001: the password has expired"
+Solución: Cambiar contraseña en SQL*Plus con:
+ALTER USER USUARIO IDENTIFIED BY nueva_contraseña;
+
+Error: "Connection refused"
+Solución: Verificar que Oracle está corriendo:
+$ lsnrctl status
+
+Error: "Template not found"
+Solución: Verificar estructura de directorios:
+ProyectoGabinete/
+├── proyecto/
+├── clientes/
+└── templates/
+    └── clientes/
+        └── registro_cliente.html
+
+================================================================================
+PARA LA SUSTENTACIÓN
+================================================================================
+
+Elementos a entregar en ZIP:
+✓ 01_crear_tablas.sql
+✓ 02_inserciones_datos.sql
+✓ settings.py (Django)
+✓ views.py (con conexión Oracle)
+✓ urls.py
+✓ registro_cliente.html (template)
+✓ Archivo Power Designer (.pdm)
+✓ PDF del modelo ER
+
+Estructura de carpetas para sustentación:
+Todos los archivos SQL, Python y HTML en COMPUTADOR LOCAL
+(Sin bases de datos remotas)
+
+Demostración esperada:
+1. Mostrar BD en Oracle SQL Developer
+2. Ejecutar queries para validar datos
+3. Iniciar servidor Django
+4. Usar interfaz web para búsqueda y registro
+5. Verificar inserciones en BD
+
+================================================================================
+Fin de la Guía | Versión 1.0
+================================================================================

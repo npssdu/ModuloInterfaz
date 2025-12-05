@@ -1,0 +1,209 @@
+/* 
+    styles.css - Estilos del Sistema de Registro de Clientes
+    Gabinete de Abogados
+    
+    Colores:
+    - Títulos: #0046FF (azul)
+    - Botón Guardar: #73C8D2 (turquesa)
+    - Fondo: #F5F1DC (crema)
+    - Botón Buscar: #FF9013 (naranja)
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #F5F1DC;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #0046FF;
+}
+
+.header h1 {
+    color: #0046FF;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #333;
+    font-size: 14px;
+}
+
+.search-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.search-section h2 {
+    font-size: 14px;
+    color: #0046FF;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+}
+
+#codClienteBusqueda {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.btn-search {
+    padding: 8px 20px;
+    background: #FF9013;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-search:hover {
+    background: #e07d0e;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #0046FF;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #0046FF;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-save {
+    flex: 1;
+    padding: 10px;
+    background: #73C8D2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-save:hover {
+    background: #5bb8c3;
+}
+
+.btn-clear {
+    flex: 1;
+    padding: 10px;
+    background: #999;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-clear:hover {
+    background: #777;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    display: block;
+}
+
+.message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+    display: block;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0046FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.field-info {
+    font-size: 11px;
+    color: #888;
+    margin-top: 3px;
+}

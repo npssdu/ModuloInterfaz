@@ -1,0 +1,123 @@
+<!-- 
+    registro_cliente.html - Interfaz Web de Registro de Clientes
+    Gabinete de Abogados
+    
+    Características:
+    - Búsqueda de cliente con lupa
+    - Formulario completo de registro
+    - Validación de datos
+    - Integración con base de datos Oracle
+    - Lista desplegable dinámica de tipos de documento
+    
+    Archivos externos:
+    - static/css/styles.css (estilos)
+    - static/js/cliente.js (JavaScript)
+-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <!-- Estilos externos -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Gabinete de Abogados</h1>
+            <p>Sistema de Registro de Clientes</p>
+        </div>
+        
+        <!-- Mensajes de Notificación -->
+        <div id="mensaje" class="message"></div>
+        
+        <!-- Sección de Búsqueda -->
+        <div class="search-section">
+            <h2>Buscar Cliente Existente</h2>
+            <div class="search-container">
+                <input type="text" id="codClienteBusqueda" placeholder="Ingrese código de cliente (ej: C0001)">
+                <button class="btn-search" onclick="buscarCliente()">Buscar</button>
+            </div>
+        </div>
+        
+        <!-- Formulario de Registro -->
+        <form id="formRegistro" onsubmit="guardarCliente(event)">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <!-- Código Cliente -->
+                <div class="form-group">
+                    <label for="codCliente">
+                        Código Cliente <span class="required">*</span>
+                    </label>
+                    <input type="text" id="codCliente" name="codCliente" 
+                           placeholder="Ej: C0001" maxlength="5" required>
+                    <div class="field-info">Máximo 5 caracteres</div>
+                </div>
+                
+                <!-- Tipo de Documento -->
+                <div class="form-group">
+                    <label for="idTipoDoc">
+                        Tipo Documento <span class="required">*</span>
+                    </label>
+                    <select id="idTipoDoc" name="idTipoDoc" required>
+                        <option value="">-- Seleccione --</option>
+                        {% for tipo in tipos_documento %}
+                            <option value="{{ tipo.id }}">{{ tipo.desc }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="field-info">Seleccione de la lista</div>
+                </div>
+            </div>
+            
+            <!-- Nombre Cliente -->
+            <div class="form-group">
+                <label for="nomCliente">
+                    Nombre <span class="required">*</span>
+                </label>
+                <input type="text" id="nomCliente" name="nomCliente" 
+                       placeholder="Ingrese nombre completo" maxlength="30" required>
+                <div class="field-info">Máximo 30 caracteres</div>
+            </div>
+            
+            <!-- Apellido Cliente -->
+            <div class="form-group">
+                <label for="apellCliente">
+                    Apellido <span class="required">*</span>
+                </label>
+                <input type="text" id="apellCliente" name="apellCliente" 
+                       placeholder="Ingrese apellido completo" maxlength="30" required>
+                <div class="field-info">Máximo 30 caracteres</div>
+            </div>
+            
+            <!-- Número de Documento -->
+            <div class="form-group">
+                <label for="nDocumento">
+                    Número de Documento <span class="required">*</span>
+                </label>
+                <input type="text" id="nDocumento" name="nDocumento" 
+                       placeholder="Ingrese número de documento" maxlength="15" required>
+                <div class="field-info">Máximo 15 caracteres</div>
+            </div>
+            
+            <!-- Botones de Acción -->
+            <div class="button-group">
+                <button type="submit" class="btn-save">Guardar</button>
+                <button type="reset" class="btn-clear">Limpiar</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- URLs para JavaScript (desde Django) -->
+    <script>
+        const URL_BUSCAR_CLIENTE = "{% url 'buscar_cliente' %}";
+        const URL_GUARDAR_CLIENTE = "{% url 'guardar_cliente' %}";
+    </script>
+    
+    <!-- JavaScript externo -->
+    <script src="{% static 'js/cliente.js' %}"></script>
+</body>
+</html>
