@@ -16,25 +16,7 @@ Sistema completo de gestión de base de datos para un gabinete de abogados que i
 
 ---
 
-## 📁 ARCHIVOS ENTREGADOS
 
-```
-ProyectoGabinete/
-│
-├── 01_crear_tablas.sql              ← Creación de 17 tablas Oracle
-├── 02_inserciones_datos.sql         ← Datos de prueba (5 clientes, 5 abogados)
-│
-├── 03_django_settings.py            ← Configuración de Django
-├── 04_django_views.py               ← Vistas y conexión a BD Oracle
-├── 05_django_urls.py                ← Rutas URL de la aplicación
-├── 06_html_template.html            ← Interfaz web HTML/CSS/JS
-│
-├── 07_guia_implementacion.txt       ← Paso a paso de instalación
-├── 08_consultas_sql.sql             ← Ejemplos de consultas útiles
-└── README.md                        ← Este archivo
-```
-
----
 
 ## 🚀 INICIO RÁPIDO
 
@@ -265,50 +247,3 @@ pip install cx-Oracle==8.3.0
 
 ---
 
-## 📝 PARA LA SUSTENTACIÓN
-
-### Elementos a Entregar (ZIP)
-✓ `01_crear_tablas.sql`
-✓ `02_inserciones_datos.sql`
-✓ `03_django_settings.py`
-✓ `04_django_views.py`
-✓ `05_django_urls.py`
-✓ `06_html_template.html`
-✓ Power Designer (archivo .pdm)
-✓ PDF del modelo ER
-
-### Demostración Esperada
-1. Mostrar BD en SQL Developer con tablas y datos
-2. Ejecutar queries de validación
-3. Iniciar servidor Django
-4. Usar interfaz web (búsqueda y registro)
-5. Verificar datos guardados en BD
-
-### Restricciones en Sustentación
-- ⚠️ Base de datos LOCAL (no remota)
-- ⚠️ Comandos de BD via consola
-- ⚠️ Máximo 3 integrantes en grupo
-- ⚠️ Sustentación individual
-- ⚠️ Sin asistentes de IA
-
----
-
-## 📞 CONTACTO Y SOPORTE
-
-**Profesor**: Sonia Ordoñez Salinas
-**Período**: 2025-3
-**Universidad**: Universidad Distrital Francisco José de Caldas
-
-*Para dudas, revisar guía de implementación (07_guia_implementacion.txt)*
-
----
-
-## 📜 VERSIÓN
-
-**Versión**: 1.0
-**Última actualización**: 2025-11-29
-**Estado**: ✅ Completo y listo para sustentación
-
----
-
-**¡Éxito en la sustentación! 🎉**
