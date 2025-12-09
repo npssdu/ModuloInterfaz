@@ -17,6 +17,7 @@ function buscarCliente() {
     
     if (!codCliente) {
         mostrarMensaje('Por favor ingrese un código de cliente', 'error');
+        alert('Por favor ingrese un código de cliente');
         return;
     }
     
@@ -46,13 +47,17 @@ function buscarCliente() {
             document.getElementById('nDocumento').value = data.datos.nDocumento;
             document.getElementById('idTipoDoc').value = data.datos.idTipoDoc;
             
-            mostrarMensaje(`Cliente encontrado: ${data.datos.nomCliente} ${data.datos.apellCliente}`, 'info');
+            const msg = `Cliente encontrado: ${data.datos.nomCliente} ${data.datos.apellCliente}`;
+            mostrarMensaje(msg, 'info');
+            alert(msg);
         } else {
             mostrarMensaje(data.mensaje, 'error');
+            alert(data.mensaje);
         }
     })
     .catch(error => {
         mostrarMensaje('Error en la búsqueda: ' + error, 'error');
+        alert('Error en la búsqueda: ' + error);
         console.error('Error:', error);
     })
     .finally(() => {
@@ -78,21 +83,25 @@ function guardarCliente(event) {
     // Validaciones cliente-side
     if (!codCliente || !nomCliente || !apellCliente || !nDocumento || !idTipoDoc) {
         mostrarMensaje('Todos los campos son obligatorios', 'error');
+        alert('Todos los campos son obligatorios');
         return;
     }
     
     if (codCliente.length > 5) {
         mostrarMensaje('Código de cliente no puede exceder 5 caracteres', 'error');
+        alert('Código de cliente no puede exceder 5 caracteres');
         return;
     }
     
     if (nomCliente.length > 30 || apellCliente.length > 30) {
         mostrarMensaje('Nombre y apellido no pueden exceder 30 caracteres', 'error');
+        alert('Nombre y apellido no pueden exceder 30 caracteres');
         return;
     }
     
     if (nDocumento.length > 15) {
         mostrarMensaje('Número de documento no puede exceder 15 caracteres', 'error');
+        alert('Número de documento no puede exceder 15 caracteres');
         return;
     }
     
@@ -120,20 +129,81 @@ function guardarCliente(event) {
     .then(data => {
         if (data.exito) {
             mostrarMensaje(data.mensaje, 'success');
+            alert(data.mensaje);
             document.getElementById('formRegistro').reset();
             document.getElementById('codClienteBusqueda').value = '';
         } else {
             mostrarMensaje(data.mensaje, 'error');
+            alert(data.mensaje);
         }
     })
     .catch(error => {
         mostrarMensaje('Error al guardar: ' + error, 'error');
+        alert('Error al guardar: ' + error);
         console.error('Error:', error);
     })
     .finally(() => {
         // Restaurar botón
         btnSave.innerHTML = textoOriginal;
         btnSave.disabled = false;
+    });
+}
+
+/**
+ * Función para eliminar cliente
+ */
+function eliminarCliente() {
+    const codCliente = document.getElementById('codClienteEliminar').value.trim();
+    
+    if (!codCliente) {
+        mostrarMensaje('Por favor ingrese un código de cliente a eliminar', 'error');
+        return;
+    }
+    
+    if (!confirm(`¿Está seguro que desea eliminar el cliente con código ${codCliente}?`)) {
+        return;
+    }
+    
+    // Mostrar indicador de carga
+    const btnDelete = document.querySelector('.btn-delete');
+    const textoOriginal = btnDelete.textContent;
+    btnDelete.innerHTML = '<span class="spinner"></span>Eliminando...';
+    btnDelete.disabled = true;
+    
+    // Crear formulario para POST
+    const formData = new FormData();
+    formData.append('codCliente', codCliente);
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    
+    // Realizar eliminación mediante AJAX
+    fetch(URL_ELIMINAR_CLIENTE, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.exito) {
+            mostrarMensaje(data.mensaje, 'success');
+            alert(data.mensaje); // Confirmación extra
+            document.getElementById('codClienteEliminar').value = '';
+            // Limpiar formulario principal si tenía el mismo cliente
+            if (document.getElementById('codCliente').value === codCliente) {
+                document.getElementById('formRegistro').reset();
+            }
+        } else {
+            mostrarMensaje(data.mensaje, 'error');
+            alert(data.mensaje); // Error visible
+        }
+    })
+    .catch(error => {
+        mostrarMensaje('Error al eliminar: ' + error, 'error');
+        alert('Error al eliminar: ' + error);
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        // Restaurar botón
+        btnDelete.innerHTML = textoOriginal;
+        btnDelete.disabled = false;
     });
 }
 

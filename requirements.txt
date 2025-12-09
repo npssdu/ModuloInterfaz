@@ -5,7 +5,7 @@
 Django==4.2.0
 
 # Driver Oracle
-cx-Oracle==8.3.0
+oracledb==2.0.0
 
 # Utilidades
 sqlparse==0.4.4

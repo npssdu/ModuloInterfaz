@@ -259,6 +259,92 @@ def guardar_cliente(request):
         conexion.close()
 
 
+def eliminar_cliente(request):
+    """
+    Elimina un cliente de la base de datos
+    """
+    print("--- INICIO ELIMINAR CLIENTE ---")
+    if request.method != 'POST':
+        return JsonResponse({'exito': False, 'mensaje': 'Método no permitido'})
+    
+    codCliente = request.POST.get('codCliente', '').strip()
+    print(f"Código recibido: '{codCliente}'")
+    
+    if not codCliente:
+        return JsonResponse({
+            'exito': False,
+            'mensaje': 'Por favor ingrese un código de cliente'
+        })
+        
+    conexion = conectar_bd()
+    if not conexion:
+        return JsonResponse({
+            'exito': False,
+            'mensaje': 'Error de conexión a la base de datos'
+        })
+        
+    try:
+        cursor = conexion.cursor()
+        
+        # Verificar si el cliente existe
+        cursor.execute("SELECT COUNT(*) FROM CLIENTE WHERE codCliente = :cod", 
+                      {'cod': codCliente})
+        existe = cursor.fetchone()[0] > 0
+        print(f"Existe cliente: {existe}")
+        
+        if not existe:
+            return JsonResponse({
+                'exito': False,
+                'mensaje': f'El cliente con código {codCliente} no existe'
+            })
+            
+        # Eliminar cliente
+        print(f"Ejecutando DELETE para {codCliente}")
+        cursor.execute("DELETE FROM CLIENTE WHERE codCliente = :cod", {'cod': codCliente})
+        print(f"Filas afectadas: {cursor.rowcount}")
+        
+        conexion.commit()
+        print("Commit realizado")
+        cursor.close()
+        
+        return JsonResponse({
+            'exito': True,
+            'mensaje': f'Cliente {codCliente} eliminado correctamente'
+        })
+        
+    except oracledb.IntegrityError as e:
+        conexion.rollback()
+        error_obj, = e.args
+        print(f"Error de integridad: {error_obj.message}")
+        if error_obj.code == 2292:
+            return JsonResponse({
+                'exito': False,
+                'mensaje': f'No se puede eliminar el cliente {codCliente} porque tiene registros asociados (Casos, Contactos, etc.)'
+            })
+        return JsonResponse({
+            'exito': False,
+            'mensaje': f'Error de integridad: {error_obj.message}'
+        })
+    except oracledb.DatabaseError as e:
+        conexion.rollback()
+        error_msg = str(e)
+        print(f"Error de BD: {error_msg}")
+        return JsonResponse({
+            'exito': False,
+            'mensaje': f'Error en la base de datos: {error_msg}'
+        })
+    except Exception as e:
+        conexion.rollback()
+        print(f"Error inesperado: {str(e)}")
+        return JsonResponse({
+            'exito': False,
+            'mensaje': f'Error inesperado: {str(e)}'
+        })
+    finally:
+        conexion.close()
+        print("--- FIN ELIMINAR CLIENTE ---")
+
+
 # Ruta adicional para obtener tipos de documento en AJAX
 def obtener_tipos_ajax(request):
     """

@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo }}</title>
     <!-- Estilos externos -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_v2.css' %}">
 </head>
 <body>
     <div class="container">
@@ -55,7 +55,6 @@
                     </label>
                     <input type="text" id="codCliente" name="codCliente" 
                            placeholder="Ej: C0001" maxlength="5" required>
-                    <div class="field-info">Máximo 5 caracteres</div>
                 </div>
                 
                 <!-- Tipo de Documento -->
@@ -69,7 +68,6 @@
                             <option value="{{ tipo.id }}">{{ tipo.desc }}</option>
                         {% endfor %}
                     </select>
-                    <div class="field-info">Seleccione de la lista</div>
                 </div>
             </div>
             
@@ -80,7 +78,6 @@
                 </label>
                 <input type="text" id="nomCliente" name="nomCliente" 
                        placeholder="Ingrese nombre completo" maxlength="30" required>
-                <div class="field-info">Máximo 30 caracteres</div>
             </div>
             
             <!-- Apellido Cliente -->
@@ -90,7 +87,6 @@
                 </label>
                 <input type="text" id="apellCliente" name="apellCliente" 
                        placeholder="Ingrese apellido completo" maxlength="30" required>
-                <div class="field-info">Máximo 30 caracteres</div>
             </div>
             
             <!-- Número de Documento -->
@@ -100,7 +96,6 @@
                 </label>
                 <input type="text" id="nDocumento" name="nDocumento" 
                        placeholder="Ingrese número de documento" maxlength="15" required>
-                <div class="field-info">Máximo 15 caracteres</div>
             </div>
             
             <!-- Botones de Acción -->
@@ -109,15 +104,25 @@
                 <button type="reset" class="btn-clear">Limpiar</button>
             </div>
         </form>
+
+        <!-- Sección de Eliminación -->
+        <div class="delete-section">
+            <h2>Eliminar Cliente</h2>
+            <div class="search-container">
+                <input type="text" id="codClienteEliminar" placeholder="Ingrese código de cliente a eliminar (ej: C0008)">
+                <button class="btn-delete" onclick="eliminarCliente()">Eliminar</button>
+            </div>
+        </div>
     </div>
     
     <!-- URLs para JavaScript (desde Django) -->
     <script>
         const URL_BUSCAR_CLIENTE = "{% url 'buscar_cliente' %}";
         const URL_GUARDAR_CLIENTE = "{% url 'guardar_cliente' %}";
+        const URL_ELIMINAR_CLIENTE = "{% url 'eliminar_cliente' %}";
     </script>
     
     <!-- JavaScript externo -->
-    <script src="{% static 'js/cliente.js' %}"></script>
+    <script src="{% static 'js/cliente.js' %}?v=5"></script>
 </body>
 </html>
