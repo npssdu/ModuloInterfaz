@@ -1,0 +1,232 @@
+-- ================================================================
+-- INSERCIONES DE DATOS - GABINETE DE ABOGADOS
+-- ================================================================
+
+-- ============ 2.1 INSERCIONES EN TABLAS BASE ============
+
+-- TIPODOCUMENTO (3 registros)
+INSERT INTO TIPODOCUMENTO VALUES ('CC', 'Cédula de Ciudadanía');
+INSERT INTO TIPODOCUMENTO VALUES ('CE', 'Cédula de Extranjería');
+INSERT INTO TIPODOCUMENTO VALUES ('PA', 'Pasaporte');
+COMMIT;
+
+-- TIPOCONTACTO (3 registros)
+INSERT INTO TIPOCONTACTO VALUES ('TEL', 'Teléfono');
+INSERT INTO TIPOCONTACTO VALUES ('EML', 'Email');
+INSERT INTO TIPOCONTACTO VALUES ('DOM', 'Domicilio');
+COMMIT;
+
+-- TIPOLUGAR (3 registros)
+INSERT INTO TIPOLUGAR VALUES ('JZD1', 'Juzgado de Primera Instancia');
+INSERT INTO TIPOLUGAR VALUES ('TRB1', 'Tribunal Superior');
+INSERT INTO TIPOLUGAR VALUES ('CSJ1', 'Corte Suprema de Justicia');
+COMMIT;
+
+-- FORMAPAGO (3 registros)
+INSERT INTO FORMAPAGO VALUES ('EFE', 'Efectivo');
+INSERT INTO FORMAPAGO VALUES ('TRF', 'Transferencia');
+INSERT INTO FORMAPAGO VALUES ('TJT', 'Tarjeta de Crédito');
+COMMIT;
+
+-- FRANQUICIA (3 registros)
+INSERT INTO FRANQUICIA VALUES ('VIS', 'VISA');
+INSERT INTO FRANQUICIA VALUES ('MAC', 'MASTERCARD');
+INSERT INTO FRANQUICIA VALUES ('AMX', 'AMERICAN EXPRESS');
+COMMIT;
+
+-- ============ 2.2 ESPECIALIZACIONES ============
+INSERT INTO ESPECIALIZACION VALUES ('01', 'Derecho Laboral');
+INSERT INTO ESPECIALIZACION VALUES ('02', 'Derecho Penal');
+INSERT INTO ESPECIALIZACION VALUES ('03', 'Derecho Civil');
+INSERT INTO ESPECIALIZACION VALUES ('04', 'Derecho Comercial');
+INSERT INTO ESPECIALIZACION VALUES ('05', 'Derecho Administrativo');
+COMMIT;
+
+-- ============ 2.2 ETAPAS PROCESALES ============
+INSERT INTO ETAPAPROCESAL VALUES ('001', 'Presentación de Demanda');
+INSERT INTO ETAPAPROCESAL VALUES ('002', 'Admisión de Demanda');
+INSERT INTO ETAPAPROCESAL VALUES ('003', 'Traslado al Demandado');
+INSERT INTO ETAPAPROCESAL VALUES ('004', 'Contestación de Demanda');
+INSERT INTO ETAPAPROCESAL VALUES ('005', 'Pruebas');
+INSERT INTO ETAPAPROCESAL VALUES ('006', 'Alegatos');
+INSERT INTO ETAPAPROCESAL VALUES ('007', 'Sentencia');
+INSERT INTO ETAPAPROCESAL VALUES ('008', 'Recursos');
+COMMIT;
+
+-- ============ 2.2 IMPUGNACIONES ============
+INSERT INTO IMPUGNACION VALUES ('01', 'Apelación');
+INSERT INTO IMPUGNACION VALUES ('02', 'Casación');
+INSERT INTO IMPUGNACION VALUES ('03', 'Revisión');
+INSERT INTO IMPUGNACION VALUES ('04', 'Recurso Extraordinario');
+COMMIT;
+
+-- ============ 2.3 INSTANCIAS ============
+INSERT INTO INSTANCIA VALUES (1);
+INSERT INTO INSTANCIA VALUES (2);
+INSERT INTO INSTANCIA VALUES (3);
+COMMIT;
+
+-- ============ 2.3 TABLA ESPECIA_ETAPA (Relación: Especializacion-Etapa-Impugnacion-Instancia) ============
+-- Derecho Laboral (01) con Etapas
+INSERT INTO ESPECIA_ETAPA VALUES (1, '01', '001', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (2, '01', '002', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (3, '01', '003', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (4, '01', '004', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (5, '01', '005', '01', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (6, '01', '006', '01', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (7, '01', '007', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (8, '01', '008', '02', 3);
+
+-- Derecho Penal (02) con Etapas
+INSERT INTO ESPECIA_ETAPA VALUES (1, '02', '001', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (2, '02', '002', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (3, '02', '003', '02', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (4, '02', '004', '02', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (5, '02', '005', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (6, '02', '007', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (7, '02', '008', '03', 3);
+
+-- Derecho Civil (03) con Etapas
+INSERT INTO ESPECIA_ETAPA VALUES (1, '03', '001', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (2, '03', '002', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (3, '03', '003', '01', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (4, '03', '004', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (5, '03', '005', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (6, '03', '007', '02', 3);
+
+-- Derecho Comercial (04) con Etapas
+INSERT INTO ESPECIA_ETAPA VALUES (1, '04', '001', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (2, '04', '002', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (3, '04', '003', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (4, '04', '004', '02', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (5, '04', '007', '02', 3);
+
+-- Derecho Administrativo (05) con Etapas
+INSERT INTO ESPECIA_ETAPA VALUES (1, '05', '001', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (2, '05', '002', '01', 1);
+INSERT INTO ESPECIA_ETAPA VALUES (3, '05', '003', '03', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (4, '05', '005', '03', 2);
+INSERT INTO ESPECIA_ETAPA VALUES (5, '05', '007', '03', 3);
+COMMIT;
+
+-- ============ 2.4 CLIENTES (5 registros) ============
+INSERT INTO CLIENTE VALUES ('C0001', 'Juan', 'Pérez García', '1234567890', 'CC');
+INSERT INTO CLIENTE VALUES ('C0002', 'María', 'López Rodríguez', '9876543210', 'CC');
+INSERT INTO CLIENTE VALUES ('C0003', 'Carlos', 'Martínez Silva', '5555555555', 'CE');
+INSERT INTO CLIENTE VALUES ('C0004', 'Sandra', 'Hernández Torres', '1111111111', 'CC');
+INSERT INTO CLIENTE VALUES ('C0005', 'Roberto', 'Díaz Ruiz', '9999999999', 'PA');
+COMMIT;
+
+-- ============ 2.4 CONTACTOS PARA CLIENTES (3 por cliente) ============
+-- Contactos Cliente C0001
+INSERT INTO CONTACTO VALUES (1001, '300-1234567', 1, 'C0001', 'TEL');
+INSERT INTO CONTACTO VALUES (1002, 'juan@email.com', 1, 'C0001', 'EML');
+INSERT INTO CONTACTO VALUES (1003, 'Cra 5 #23-45', 0, 'C0001', 'DOM');
+
+-- Contactos Cliente C0002
+INSERT INTO CONTACTO VALUES (1004, '300-7654321', 1, 'C0002', 'TEL');
+INSERT INTO CONTACTO VALUES (1005, 'maria@email.com', 1, 'C0002', 'EML');
+INSERT INTO CONTACTO VALUES (1006, 'Cra 10 #50-60', 0, 'C0002', 'DOM');
+
+-- Contactos Cliente C0003
+INSERT INTO CONTACTO VALUES (1007, '300-5555555', 1, 'C0003', 'TEL');
+INSERT INTO CONTACTO VALUES (1008, 'carlos@email.com', 1, 'C0003', 'EML');
+INSERT INTO CONTACTO VALUES (1009, 'Cra 15 #80-90', 0, 'C0003', 'DOM');
+
+-- Contactos Cliente C0004
+INSERT INTO CONTACTO VALUES (1010, '300-1111111', 1, 'C0004', 'TEL');
+INSERT INTO CONTACTO VALUES (1011, 'sandra@email.com', 1, 'C0004', 'EML');
+INSERT INTO CONTACTO VALUES (1012, 'Cra 20 #100-110', 0, 'C0004', 'DOM');
+
+-- Contactos Cliente C0005
+INSERT INTO CONTACTO VALUES (1013, '300-9999999', 1, 'C0005', 'TEL');
+INSERT INTO CONTACTO VALUES (1014, 'roberto@email.com', 1, 'C0005', 'EML');
+INSERT INTO CONTACTO VALUES (1015, 'Cra 25 #120-130', 0, 'C0005', 'DOM');
+COMMIT;
+
+-- ============ 2.4 ABOGADOS (5 registros) ============
+INSERT INTO ABOGADO VALUES ('1000000001', 'Miguel', 'Fernández López', 'TP001', '01');
+INSERT INTO ABOGADO VALUES ('1000000002', 'Andrés', 'Sánchez Ramírez', 'TP002', '02');
+INSERT INTO ABOGADO VALUES ('1000000003', 'Paola', 'Gutiérrez Castro', 'TP003', '03');
+INSERT INTO ABOGADO VALUES ('1000000004', 'Felipe', 'Torres Moreno', 'TP004', '04');
+INSERT INTO ABOGADO VALUES ('1000000005', 'Catalina', 'Vargas Acosta', 'TP005', '05');
+COMMIT;
+
+-- ============ 2.5 LUGARES (3 Juzgados + 3 Tribunales) ============
+-- Juzgados Bogotá
+INSERT INTO LUGAR VALUES ('L0001', 'Juzgado Civil 1 Bogotá', 'Cra 7 #12-45', '601-2345678', 'juzgado1@bogota.gov.co', 'JZD1');
+INSERT INTO LUGAR VALUES ('L0002', 'Juzgado Laboral 1 Bogotá', 'Cra 7 #14-50', '601-2345679', 'juzgado2@bogota.gov.co', 'JZD1');
+INSERT INTO LUGAR VALUES ('L0003', 'Juzgado Penal 1 Bogotá', 'Cra 7 #16-55', '601-2345680', 'juzgado3@bogota.gov.co', 'JZD1');
+
+-- Tribunales
+INSERT INTO LUGAR VALUES ('L0004', 'Tribunal Superior Bogotá', 'Cra 8 #20-60', '601-3345678', 'tribunal1@bogota.gov.co', 'TRB1');
+INSERT INTO LUGAR VALUES ('L0005', 'Tribunal de lo Civil Bogotá', 'Cra 8 #22-65', '601-3345679', 'tribunal2@bogota.gov.co', 'TRB1');
+INSERT INTO LUGAR VALUES ('L0006', 'Tribunal de lo Laboral Bogotá', 'Cra 8 #24-70', '601-3345680', 'tribunal3@bogota.gov.co', 'TRB1');
+COMMIT;
+
+-- ============ 2.6 CASOS HIPOTÉTICOS ============
+-- Caso 1: Derecho Laboral
+INSERT INTO CASO VALUES (10001, TO_DATE('2024-01-15', 'YYYY-MM-DD'), NULL, '50000000', 'C0001', '1000000001', 'L0002');
+
+-- Caso 2: Derecho Penal
+INSERT INTO CASO VALUES (10002, TO_DATE('2024-02-20', 'YYYY-MM-DD'), NULL, '75000000', 'C0002', '1000000002', 'L0003');
+
+-- Caso 3: Derecho Civil
+INSERT INTO CASO VALUES (10003, TO_DATE('2024-03-10', 'YYYY-MM-DD'), TO_DATE('2024-09-15', 'YYYY-MM-DD'), '30000000', 'C0003', '1000000003', 'L0001');
+
+-- Caso 4: Derecho Comercial
+INSERT INTO CASO VALUES (10004, TO_DATE('2024-04-05', 'YYYY-MM-DD'), NULL, '100000000', 'C0004', '1000000004', 'L0001');
+
+-- Caso 5: Derecho Administrativo
+INSERT INTO CASO VALUES (10005, TO_DATE('2024-05-12', 'YYYY-MM-DD'), NULL, '45000000', 'C0005', '1000000005', 'L0002');
+COMMIT;
+
+-- ============ SUCESOS PARA CASOS ============
+INSERT INTO SUCESO VALUES (2001, 'Presentación de demanda laboral por despido injustificado', 10001);
+INSERT INTO SUCESO VALUES (2002, 'Acusación penal por hurto en establecimiento comercial', 10002);
+INSERT INTO SUCESO VALUES (2003, 'Demanda civil por incumplimiento de contrato', 10003);
+INSERT INTO SUCESO VALUES (2004, 'Demanda comercial por conflicto entre socios', 10004);
+INSERT INTO SUCESO VALUES (2005, 'Recurso administrativo contra acto de autoridad municipal', 10005);
+COMMIT;
+
+-- ============ DOCUMENTOS PARA CASOS ============
+INSERT INTO DOCUMENTO VALUES (3001, '/documentos/caso10001/demanda_laboral.pdf', 10001);
+INSERT INTO DOCUMENTO VALUES (3002, '/documentos/caso10002/acusacion_penal.pdf', 10002);
+INSERT INTO DOCUMENTO VALUES (3003, '/documentos/caso10003/contrato.pdf', 10003);
+INSERT INTO DOCUMENTO VALUES (3004, '/documentos/caso10004/estatutos_empresa.pdf', 10004);
+INSERT INTO DOCUMENTO VALUES (3005, '/documentos/caso10005/acto_administrativo.pdf', 10005);
+COMMIT;
+
+-- ============ RESULTADOS PARA CASOS ============
+INSERT INTO RESULTADO VALUES (4001, 'Sentencia pendiente - Caso en etapa de pruebas', 10001);
+INSERT INTO RESULTADO VALUES (4002, 'Acusación admitida - Caso en etapa de juzgamiento', 10002);
+INSERT INTO RESULTADO VALUES (4003, 'Sentencia condenatoria - Obligación de cumplimiento', 10003);
+INSERT INTO RESULTADO VALUES (4004, 'Caso en etapa inicial de investigación', 10004);
+INSERT INTO RESULTADO VALUES (4005, 'Recurso en trámite ante autoridad administrativa', 10005);
+COMMIT;
+
+-- ============ EXPEDIENTES PARA CASOS ============
+INSERT INTO EXPEDIENTE VALUES (5001, TO_DATE('2024-01-15', 'YYYY-MM-DD'), 10001, '001');
+INSERT INTO EXPEDIENTE VALUES (5002, TO_DATE('2024-02-20', 'YYYY-MM-DD'), 10002, '001');
+INSERT INTO EXPEDIENTE VALUES (5003, TO_DATE('2024-03-10', 'YYYY-MM-DD'), 10003, '001');
+INSERT INTO EXPEDIENTE VALUES (5004, TO_DATE('2024-04-05', 'YYYY-MM-DD'), 10004, '001');
+INSERT INTO EXPEDIENTE VALUES (5005, TO_DATE('2024-05-12', 'YYYY-MM-DD'), 10005, '001');
+COMMIT;
+
+-- ============ PAGOS DE CASOS ============
+INSERT INTO PAGO VALUES (101, TO_DATE('2024-01-20', 'YYYY-MM-DD'), 5000000, NULL, 'EFE', 10001, NULL);
+INSERT INTO PAGO VALUES (102, TO_DATE('2024-02-25', 'YYYY-MM-DD'), 10000000, 4532123456789012, 'TJT', 10002, 'VIS');
+INSERT INTO PAGO VALUES (103, TO_DATE('2024-03-15', 'YYYY-MM-DD'), 15000000, NULL, 'TRF', 10003, NULL);
+INSERT INTO PAGO VALUES (104, TO_DATE('2024-04-10', 'YYYY-MM-DD'), 20000000, 5412987654321098, 'TJT', 10004, 'MAC');
+INSERT INTO PAGO VALUES (105, TO_DATE('2024-05-20', 'YYYY-MM-DD'), 8000000, NULL, 'EFE', 10005, NULL);
+COMMIT;
+
+-- Confirmación final
+SELECT COUNT(*) as Total_Registros FROM 
+  (SELECT COUNT(*) as Clientes FROM CLIENTE
+   UNION ALL
+   SELECT COUNT(*) FROM ABOGADO
+   UNION ALL
+   SELECT COUNT(*) FROM CASO
+   UNION ALL
+   SELECT COUNT(*) FROM PAGO);
